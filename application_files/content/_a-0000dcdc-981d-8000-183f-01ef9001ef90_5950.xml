@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>DF_AttachmentsGrid</name>
+        <uuid>_a-0000dcdc-981d-8000-183f-01ef9001ef90_5950</uuid>
+        <description>Grid of attachments for a record.</description>
+        <parentUuid>be39d4bf-319d-49c1-a100-6f40f1c05fb8</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!documentsToken,
+  local!oldAttachments: if(
+    or(isnull(ri!documents), count(ri!documents) &lt; 1),
+    0,
+    length(ri!documents)
+  ),
+  {
+    if(
+      and(ri!readOnly, or(isnull(ri!documents), count(ri!documents) &lt; 1)),
+      {},
+      #&quot;SYSTEM_SYSRULES_gridLayout&quot;(
+        label: &quot;Attachments&quot;,
+        emptyGridMessage: &quot;No files have been attached to this record&quot;,
+        headerCells: {
+          #&quot;SYSTEM_SYSRULES_gridLayoutHeaderCell&quot;(label: &quot;File&quot;),
+          #&quot;SYSTEM_SYSRULES_gridLayoutHeaderCell&quot;(label: &quot;Uploaded On&quot;, align: &quot;RIGHT&quot;),
+          if(
+            ri!readOnly,
+            {},
+            #&quot;SYSTEM_SYSRULES_gridLayoutHeaderCell&quot;()
+          )
+        },
+        columnConfigs: {
+          #&quot;SYSTEM_SYSRULES_gridLayoutColumnConfig&quot;(weight: 7),
+          #&quot;SYSTEM_SYSRULES_gridLayoutColumnConfig&quot;(weight: 3),
+          if(
+            ri!readOnly,
+            {},
+            #&quot;SYSTEM_SYSRULES_gridLayoutColumnConfig&quot;(width: &quot;ICON&quot;)
+          )
+        },
+        rows: #&quot;SYSTEM_SYSRULES_applyComponents&quot;(
+          function: #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5931&quot;(
+            attachments: ri!documents,
+            index: _,
+            readOnly: ri!readOnly,
+            oldAttachments: local!oldAttachments,
+            target: ri!target
+          ),
+          array: if(
+            or(isnull(ri!documents), count(ri!documents) &lt; 1),
+            {},
+            1+enumerate(count(ri!documents))
+          )
+        ),
+        addRowLink: if(
+          ri!readOnly,
+          null,
+          #&quot;SYSTEM_SYSRULES_dynamicLink&quot;(
+            label: &quot;Attach New File&quot;,
+            value: todocument(null),
+            saveInto: a!save(ri!documents, append(ri!documents, save!value))
+          )
+        )
+      )
+    )
+  }
+)</definition>
+        <namedTypedValue>
+            <name>documents</name>
+            <type>
+                <name>CollaborationDocument?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>readOnly</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>target</name>
+            <type>
+                <name>CollaborationFolder</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

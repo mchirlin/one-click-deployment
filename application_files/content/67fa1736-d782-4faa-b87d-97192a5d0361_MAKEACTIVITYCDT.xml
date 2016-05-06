@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>DF_CreateActivityCDT</name>
+        <uuid>67fa1736-d782-4faa-b87d-97192a5d0361_MAKEACTIVITYCDT</uuid>
+        <description>Constructs the activity CDT based on inputs.</description>
+        <parentUuid>be39d4bf-319d-49c1-a100-6f40f1c05fb8</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>'type!{urn:com:appian:types:DF}InvoiceChange'(
+  recordId: ri!recordId,
+  who: ri!who,
+  action: ri!action,
+  /* Use a different Details pattern for each type of activity */
+  details:if(
+    ri!action = #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5920&quot;,
+    &quot;To: &quot; &amp; #&quot;99c74e51-c509-4f87-8cb8-a17e0d0cad80_FORMATNAME&quot;(ri!taskAssignee) &amp; char(10) &amp; &quot;Details: &quot; &amp; ri!taskDetails &amp; if(
+      isnull(ri!taskDeadline),
+      &quot;&quot;,
+      char(10) &amp; &quot;Deadline: &quot; &amp; ri!taskDeadline
+    ),
+    
+    or(ri!action = #&quot;95a30e9f-8554-46bf-9f33-2600857dff1f_ACTIONCOMPLETED&quot;, ri!action = #&quot;9f0c1926-0a1f-4f3f-bd7e-6ea8651d8726_ACTIONSKIPPED&quot;),
+    &quot;From: &quot; &amp; #&quot;99c74e51-c509-4f87-8cb8-a17e0d0cad80_FORMATNAME&quot;(ri!taskAssigner) &amp; char(10) &amp; if(isnull(ri!comments), &quot;(No Comments)&quot;, &quot;Comments: &quot; &amp; ri!comments),
+    
+    ri!action = #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5919&quot;,
+    &quot;Message: &quot; &amp; ri!message &amp; if(not(isnull(ri!attachment)), char(10) &amp; &quot;Attachment: &quot; &amp; #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5936&quot;(ri!attachment), &quot;&quot;),
+    
+    or(ri!action = #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5918&quot;, ri!action = #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5922&quot;),
+    #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5948&quot;(ri!oldCDT, ri!newCDT, #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5965&quot;, #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5964&quot;, #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5966&quot;) &amp;
+    if(or(isnull(ri!newDocs), count(ri!newDocs)=0),
+      &quot;&quot;,
+      &quot;Attached Files: &quot; &amp; joinarray(apply(#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5936&quot;, ri!newDocs), &quot;, &quot;) &amp; char(10)
+    ) &amp;
+    if(or(isnull(ri!deletedDocs), count(ri!deletedDocs)=0),
+      &quot;&quot;,
+      &quot;Deleted Files: &quot; &amp; joinarray(apply(#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5936&quot;, ri!deletedDocs), &quot;, &quot;)
+    ),
+    
+    &quot;no activity found&quot;
+  ),
+  when: now()
+)</definition>
+        <namedTypedValue>
+            <name>recordId</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>who</name>
+            <type>
+                <name>User</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>action</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>taskAssignee</name>
+            <type>
+                <name>User</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>taskAssigner</name>
+            <type>
+                <name>User</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>taskDetails</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>taskDeadline</name>
+            <type>
+                <name>dateTime</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>comments</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>message</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>attachment</name>
+            <type>
+                <name>CollaborationDocument</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>oldCDT</name>
+            <type>
+                <name>Invoice</name>
+                <namespace>urn:com:appian:types:DF</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>newCDT</name>
+            <type>
+                <name>Invoice</name>
+                <namespace>urn:com:appian:types:DF</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>newDocs</name>
+            <type>
+                <name>CollaborationDocument?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>deletedDocs</name>
+            <type>
+                <name>CollaborationDocument?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <communityKnowledgeCenter>
+        <name>Department Finances Documents</name>
+        <uuid>a45dd649-e7e5-43a4-bc09-bb8af77db16c_KC</uuid>
+        <description>Record and message attachments for Invoices</description>
+        <parentUuid>SYSTEM_COMMUNITY_ROOT</parentUuid>
+        <visibility>
+            <advertise>true</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <expirationDays>0</expirationDays>
+    </communityKnowledgeCenter>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="authors">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000dcdc-97dd-8000-183e-011e94011e94_53</groupUuid>
+            </groups>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000dcdc-97dd-8000-183e-011e94011e94_54</groupUuid>
+            </groups>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

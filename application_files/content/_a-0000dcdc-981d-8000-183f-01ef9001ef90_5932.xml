@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>DF_GetCDTFieldDiff</name>
+        <uuid>_a-0000dcdc-981d-8000-183f-01ef9001ef90_5932</uuid>
+        <description>Given two CDTs and a field name, returns empty string if the field is the same between the CDTs, and returns the change if they are different.</description>
+        <parentUuid>1c9d8eb9-f682-4add-a209-b09af0151627</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>/* If there's no change, don't add anything to the current string *
+ * If there is a change, add it to the string before returning it */
+if(
+  and( /* To catch lists of values */
+    index(ri!oldCDT, ri!fields[ri!index], {}) =
+    index(ri!newCDT, ri!fields[ri!index], {})
+  ),
+  ri!currentString,
+  concat(
+    ri!currentString,
+    if(isnull(index(ri!oldCDT, ri!fields[ri!index], {})),
+      /* If there was no old field, just show current value */ 
+      if(
+        /* Nested CDT lookup fields have &quot;selection&quot; in their field type */
+        search(&quot;SELECT&quot;, ri!fieldTypes[ri!index]),
+        ri!fieldNames[ri!index] &amp; &quot;: &quot; &amp; joinarray(index(index(ri!newCDT,ri!fields[ri!index],{}), &quot;value&quot;, {}) &amp; char(10), &quot;, &quot;),
+        
+        /* Record fields can't display their title for security reasons */
+        search(&quot;record&quot;, ri!fieldTypes[ri!index]), 
+        ri!fieldNames[ri!index] &amp; &quot; record value selected&quot; &amp; char(10),
+        
+        /* Since paragraph fields can contain long values, only show the first 200 chars  */
+        search(&quot;paragraph&quot;, ri!fieldTypes[ri!index]),
+        ri!fieldNames[ri!index] &amp; &quot;: &quot; &amp; left(index(ri!newCDT, ri!fields[ri!index], {}), 200) &amp; char(10),
+        
+        /* For primitive fields (text, date, number) just read out the value */
+        ri!fieldNames[ri!index] &amp; &quot;: &quot; &amp; index(ri!newCDT, ri!fields[ri!index], {}) &amp; char(10)
+      ),
+      /* Otherwise, show old and new values */
+      if(
+        /* Nested CDT lookup fields have &quot;selection&quot; in their field type */
+        search(&quot;SELECT&quot;, ri!fieldTypes[ri!index]),
+        ri!fieldNames[ri!index] &amp; &quot;: &quot; &amp; 
+        joinarray(index(index(ri!oldCDT,ri!fields[ri!index],{}), &quot;value&quot;, {}), &quot;, &quot;) &amp; &quot; ➝ &quot; &amp;
+        joinarray(index(index(ri!newCDT,ri!fields[ri!index],{}), &quot;value&quot;, {}), &quot;, &quot;) &amp;
+        char(10),
+        
+        /* Record fields can't display their title for security reasons */
+        search(&quot;record&quot;, ri!fieldTypes[ri!index]), 
+        ri!fieldNames[ri!index] &amp; &quot; record value changed&quot; &amp; char(10),
+        
+        /* Since paragraph fields can contain long values, only show the first 200 chars  */
+        search(&quot;paragraph&quot;, ri!fieldTypes[ri!index]), 
+        ri!fieldNames[ri!index] &amp; &quot;: &quot; &amp; 
+        left(index(ri!oldCDT, ri!fields[ri!index], {}), 200) &amp; &quot; ➝ &quot; &amp;
+        left(index(ri!newCDT, ri!fields[ri!index], {}), 200) &amp;
+        char(10),
+        
+        /* For primitive fields (text, date, number) just read out the value */
+        ri!fieldNames[ri!index] &amp; &quot;: &quot; &amp; 
+        index(ri!oldCDT, ri!fields[ri!index], {}) &amp; &quot; ➝ &quot; &amp;
+        index(ri!newCDT, ri!fields[ri!index], {}) &amp;
+        char(10)
+      )
+    )
+  )
+)
+</definition>
+        <namedTypedValue>
+            <name>currentString</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>index</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>oldCDT</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>newCDT</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>fields</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>fieldNames</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>fieldTypes</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

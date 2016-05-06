@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="urn:com:appian:types:DF"
+  xmlns:tns="urn:com:appian:types:DF" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="InvoiceChange">
+    <xsd:annotation>
+      <xsd:appinfo source="appian.jpa">@Table(name="qckapp_df_change")</xsd:appinfo>
+      <xsd:documentation><![CDATA[Records a change to a invoice]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="id" nillable="true" type="xsd:int">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Id @GeneratedValue</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="recordId" nillable="true" type="xsd:int"/>
+      <xsd:element name="who" nillable="true" type="xsd:string"/>
+      <xsd:element name="action" nillable="true" type="xsd:string"/>
+      <xsd:element name="details" nillable="true" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(columnDefinition="VARCHAR(4000)")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="when" nillable="true" type="xsd:dateTime"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

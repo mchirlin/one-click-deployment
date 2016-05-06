@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<groupHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <group>
+        <name>Department Finances Collaborators</name>
+        <securityMap>SECURITYMAP_TEAM</securityMap>
+        <uuid>_e-0000dcdc-97dd-8000-183e-011e94011e94_53</uuid>
+        <groupTypeUuid>SYSTEM_GROUP_TYPE_CUSTOM</groupTypeUuid>
+        <description>Group that all Department Finances activity is secured to.</description>
+        <delegatedCreation>false</delegatedCreation>
+        <memberPolicy>MEMBERPOLICY_CLOSED</memberPolicy>
+        <viewingPolicy>VIEWINGPOLICY_LOW</viewingPolicy>
+        <attributes/>
+    </group>
+    <members>
+        <users/>
+        <groups/>
+    </members>
+    <admins>
+        <users/>
+        <groups>
+            <groupUuid>_e-0000dcdc-97dd-8000-183e-011e94011e94_54</groupUuid>
+        </groups>
+    </admins>
+    <ruleSet/>
+</groupHaul>

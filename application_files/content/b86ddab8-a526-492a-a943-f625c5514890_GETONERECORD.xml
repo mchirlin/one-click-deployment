@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>DF_GetInvoiceById</name>
+        <uuid>b86ddab8-a526-492a-a943-f625c5514890_GETONERECORD</uuid>
+        <description>Returns the Invoice that matches the passed id</description>
+        <parentUuid>be39d4bf-319d-49c1-a100-6f40f1c05fb8</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>cast(
+  'type!{urn:com:appian:types:DF}Invoice',
+  #&quot;SYSTEM_SYSRULES_queryEntity&quot;(
+    entity: #&quot;93a26854-1693-4d38-8bc9-11cc94fe5f53_MAINDSECONSTANT&quot;,
+    query: #&quot;SYSTEM_SYSRULES_query&quot;(
+      filter: #&quot;SYSTEM_SYSRULES_queryFilter&quot;(
+        field: &quot;id&quot;,
+        operator: &quot;=&quot;,
+        value: ri!id
+      ),
+      pagingInfo: #&quot;SYSTEM_SYSRULES_pagingInfo&quot;(1, 1)
+    )
+  ).data
+)</definition>
+        <namedTypedValue>
+            <name>id</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

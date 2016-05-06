@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>DF_SendMessage</name>
+        <uuid>_a-0000dcdc-981d-8000-183f-01ef9001ef90_5962</uuid>
+        <description>Interface to make a post from a Invoice</description>
+        <parentUuid>be39d4bf-319d-49c1-a100-6f40f1c05fb8</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>=#&quot;SYSTEM_SYSRULES_formLayout&quot;(
+  label: if(
+    isnull(ri!recordId),
+    &quot;Send Message&quot;,
+    &quot;Send Message from &quot; &amp; #&quot;b86ddab8-a526-492a-a943-f625c5514890_GETONERECORD&quot;(ri!recordId).title
+  ),
+  instructions: &quot;Send a Tempo message about this record to all users of this application&quot;,
+  firstColumnContents: {
+    #&quot;SYSTEM_SYSRULES_paragraphField&quot;(
+      label: &quot;Message&quot;,
+      labelPosition: &quot;ABOVE&quot;,
+      validations: if(len(ri!message)&gt;4000, &quot;Message may not be longer than 4000 characters. You have entered &quot; &amp; len(ri!message) &amp; &quot; characters.&quot;, &quot;&quot;),
+      value: ri!message,
+      saveInto: ri!message,
+      refreshAfter: &quot;KEYPRESS&quot;,
+      required: true
+    ),
+    #&quot;SYSTEM_SYSRULES_fileUploadField&quot;(
+      label: &quot;Upload Attachment&quot;,
+      instructions: &quot;This file will be displayed as an attachment to your Tempo message&quot;,
+      target: #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5925&quot;,
+      value: ri!attachment,
+      saveInto: ri!attachment
+    )
+  },
+  buttons: #&quot;SYSTEM_SYSRULES_ButtonLayout&quot;(
+    primaryButtons: {
+      #&quot;SYSTEM_SYSRULES_ButtonWidgetSubmit&quot;(
+        label: &quot;Send Message&quot;,
+        style: &quot;PRIMARY&quot;
+      )
+    },
+    secondaryButtons: {
+      #&quot;SYSTEM_SYSRULES_ButtonWidgetSubmit&quot;(
+        label: &quot;Cancel&quot;,
+        style: &quot;NORMAL&quot;,
+        value: true,
+        saveInto: ri!cancel,
+        skipValidation: true
+      )
+    }
+  )
+)</definition>
+        <namedTypedValue>
+            <name>message</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>cancel</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>attachment</name>
+            <type>
+                <name>CollaborationDocument</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>recordId</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

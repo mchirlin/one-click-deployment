@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>DF_TaskForm</name>
+        <uuid>878e8e76-5725-454b-950f-892958422e0b_TASKFORM</uuid>
+        <description>Form for ad-hoc tasks sent from Invoice records</description>
+        <parentUuid>be39d4bf-319d-49c1-a100-6f40f1c05fb8</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!record: #&quot;b86ddab8-a526-492a-a943-f625c5514890_GETONERECORD&quot;(ri!recordId),
+  #&quot;SYSTEM_SYSRULES_formLayout&quot;(
+    label: &quot;Task about &quot; &amp; local!record.title,
+    firstColumnContents: {
+      #&quot;SYSTEM_SYSRULES_sectionLayout&quot;(
+        label: &quot;Task Information&quot;,
+        firstColumnContents: {
+          #&quot;SYSTEM_SYSRULES_paragraphField&quot;(
+            label: &quot;Task Details&quot;,
+            labelPosition: &quot;ADJACENT&quot;,
+            value: ri!taskDetails,
+            readOnly: true
+          ),
+          #&quot;SYSTEM_SYSRULES_linkField&quot;(
+            label: &quot;Record Link&quot;,
+            labelPosition: &quot;ADJACENT&quot;,
+            links: #&quot;SYSTEM_SYSRULES_recordLink&quot;(
+              label: local!record.title,
+              recordType: #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5926&quot;,
+              identifier: local!record.id
+            )
+          )
+        },
+        secondColumnContents: {
+          #&quot;SYSTEM_SYSRULES_linkField&quot;(
+            label: &quot;Task From&quot;,
+            labelPosition: &quot;ADJACENT&quot;,
+            links: #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5960&quot;(
+              username: ri!taskFrom,
+              label: #&quot;99c74e51-c509-4f87-8cb8-a17e0d0cad80_FORMATNAME&quot;(ri!taskFrom)
+            )
+          ),
+          #&quot;SYSTEM_SYSRULES_dateTimeField&quot;(
+            label: &quot;Task Sent&quot;,
+            labelPosition: &quot;ADJACENT&quot;,
+            value: ri!taskedOn,
+            readOnly: true
+          )
+        }
+      ),
+      #&quot;SYSTEM_SYSRULES_sectionLayout&quot;(
+        label: &quot;&quot;,
+        firstColumnContents: {
+          #&quot;SYSTEM_SYSRULES_paragraphField&quot;(
+            label: &quot;Comments&quot;,
+            labelPosition: &quot;ADJACENT&quot;,
+            required: true,
+            validations: if(
+              len(ri!comments)&gt;4000,
+              &quot;Comments may not be longer than 4000 characters. You have entered &quot; &amp; len(ri!comments) &amp; &quot; characters.&quot;,
+              &quot;&quot;
+            ),
+            helpTooltip: &quot;Any comments entered here will be shared in the record’s activity history&quot;,
+            value: ri!comments,
+            saveInto: ri!comments,
+            refreshAfter: &quot;KEYPRESS&quot;
+          )
+        }
+      ),
+      #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5955&quot;(
+        label: &quot;Record Information&quot;,
+        record: local!record,
+        creating: false,
+        readOnly: true,
+        documents: if(
+          isnull(local!record.folderId),
+          {},
+          folder(local!record.folderId, &quot;documentChildren&quot;)
+        )
+      )
+    },
+    buttons: #&quot;SYSTEM_SYSRULES_ButtonLayout&quot;(
+      primaryButtons: {
+        #&quot;SYSTEM_SYSRULES_ButtonWidgetSubmit&quot;(
+          label: &quot;Task Completed&quot;,
+          style: &quot;PRIMARY&quot;
+        )
+      },
+      secondaryButtons: {
+        #&quot;SYSTEM_SYSRULES_ButtonWidgetSubmit&quot;(
+          label: &quot;Skip Task&quot;,
+          style: &quot;NORMAL&quot;,
+          value: true,
+          saveInto: ri!cancel,
+          skipValidation: true
+        )
+      }
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>cancel</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>taskDetails</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>taskFrom</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>taskedOn</name>
+            <type>
+                <name>dateTime</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>recordId</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>comments</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

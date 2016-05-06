@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>DF_TaskGridColumn</name>
+        <uuid>_a-0000dcdc-981d-8000-183f-01ef9001ef90_5957</uuid>
+        <description>Generates a single column dynamically for use in the Open Tasks record view. Dynamic generation lets changes to the process report be reflected instantly without needing to reconfigure the SAIL interface.</description>
+        <parentUuid>1c9d8eb9-f682-4add-a209-b09af0151627</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>with(
+  local!columnData: index(ri!data, ri!columnConfig.field, {}),
+  local!columnDataCount: count(local!columnData),
+  if(and(ri!columnConfig.configuredFormatting = &quot;TASK_STATUS&quot;, local!columnDataCount &gt; 0),
+    #&quot;SYSTEM_SYSRULES_gridImageColumn&quot;(
+      label: ri!columnConfig.label,
+      field: ri!columnConfig.field,
+      size: &quot;ICON&quot;,
+      data: apply(
+        #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5944&quot;,
+        local!columnData
+      )
+    ),
+    if(
+      /* This excludes the record ID column from showing up, *
+       * because we're using it only for filtering purposes  */
+      ri!columnConfig.configuredFormatting = &quot;NUMBER&quot;,
+      {},
+      #&quot;SYSTEM_SYSRULES_gridTextColumn&quot;(
+        label: ri!columnConfig.label,
+        field: ri!columnConfig.field,
+        alignment: if(
+          ri!columnConfig.configuredFormatting = &quot;DATE_TIME&quot;,
+          &quot;RIGHT&quot;,
+          &quot;LEFT&quot;
+        ),
+        data: if(
+          ri!columnConfig.configuredDrilldown = &quot;USER_PROFILE&quot;,
+          apply(
+            #&quot;99c74e51-c509-4f87-8cb8-a17e0d0cad80_FORMATNAME&quot;,
+            apply(fn!tostring, local!columnData)
+          ),
+          ri!columnConfig.configuredFormatting = &quot;DATE_TIME&quot;,
+          apply(
+            #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5937&quot;,
+            local!columnData
+          ),
+          local!columnData
+        ),
+        links: if(
+          ri!columnConfig.configuredDrilldown = &quot;USER_PROFILE&quot;,
+          apply(
+            #&quot;SYSTEM_SYSRULES_userRecordLink&quot;(label: _, user: _),
+            merge(
+              local!columnData,
+              local!columnData
+            )
+          ),
+          {}
+        )
+      )
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>columnConfig</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>data</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

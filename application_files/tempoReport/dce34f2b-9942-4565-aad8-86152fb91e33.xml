@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tempoReportHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <tempoReport name="Invoices" a:uuid="dce34f2b-9942-4565-aad8-86152fb91e33">
+        <a:description>Aggregated information and metrics on Invoices</a:description>
+        <a:uiExpr>=#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5961&quot;()</a:uiExpr>
+        <a:urlStub>6UGBpw</a:urlStub>
+    </tempoReport>
+    <roleMap>
+        <role name="report_administrator">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000dcdc-97dd-8000-183e-011e94011e94_54</groupUuid>
+            </groups>
+        </role>
+        <role name="report_viewer">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000dcdc-97dd-8000-183e-011e94011e94_53</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+</tempoReportHaul>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>DF_CreateUpdateInvoice</name>
+        <uuid>_a-0000dcdc-981d-8000-183f-01ef9001ef90_5958</uuid>
+        <description>Interface for creating and updating Invoices</description>
+        <parentUuid>be39d4bf-319d-49c1-a100-6f40f1c05fb8</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!creating: isnull(ri!record),
+  local!oldRecord: ri!record,
+  local!oldDocuments: ri!documents,
+  #&quot;SYSTEM_SYSRULES_formLayout&quot;(
+    label: if(
+      local!creating,
+      &quot;Add New Invoice&quot;,
+      &quot;Update Invoice&quot;
+    ),
+    firstColumnContents: {
+      #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5955&quot;(
+        record: ri!record,
+        documents: ri!documents,
+        creating: local!creating,
+        readOnly: false
+      )
+    },
+    buttons: #&quot;SYSTEM_SYSRULES_ButtonLayout&quot;(
+      primaryButtons: {
+        if(
+          local!creating,
+          #&quot;SYSTEM_SYSRULES_ButtonWidgetSubmit&quot;(
+            label: &quot;Submit Invoice&quot;,
+            style: &quot;PRIMARY&quot;,
+            saveInto: {
+              a!save(ri!record.createdOn, now()),
+              a!save(ri!record.createdBy, loggedInUser()),
+              a!save(ri!record.updatedOn, now()),
+              a!save(ri!record.updatedBy, loggedInUser()),
+            }
+          ),
+          #&quot;SYSTEM_SYSRULES_ButtonWidgetSubmit&quot;(
+            label: &quot;Update Invoice&quot;,
+            style: &quot;PRIMARY&quot;,
+            saveInto: {
+              a!save(ri!record.updatedOn, now()),
+              a!save(ri!record.updatedBy, loggedInUser()),
+              a!save(ri!oldRecord, local!oldRecord),
+              a!save(ri!addedDocs, difference(reject(fn!isnull, ri!documents), local!oldDocuments)),
+              a!save(ri!deletedDocs, difference(local!oldDocuments, reject(fn!isnull, ri!documents)))
+            }
+          )
+        )
+      },
+      secondaryButtons: {
+        #&quot;SYSTEM_SYSRULES_ButtonWidgetSubmit&quot;(
+          label: &quot;Cancel&quot;,
+          style: &quot;NORMAL&quot;,
+          value: true,
+          saveInto: ri!cancel,
+          skipValidation: true
+        )
+      }
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>record</name>
+            <type>
+                <name>Invoice</name>
+                <namespace>urn:com:appian:types:DF</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>documents</name>
+            <type>
+                <name>CollaborationDocument?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>addedDocs</name>
+            <type>
+                <name>CollaborationDocument?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>deletedDocs</name>
+            <type>
+                <name>CollaborationDocument?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>cancel</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>oldRecord</name>
+            <type>
+                <name>Invoice</name>
+                <namespace>urn:com:appian:types:DF</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

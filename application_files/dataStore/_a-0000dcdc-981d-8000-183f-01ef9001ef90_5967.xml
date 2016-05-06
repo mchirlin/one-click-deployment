@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dataStoreHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <dataStore>
+        <uuid>_a-0000dcdc-981d-8000-183f-01ef9001ef90_5967</uuid>
+        <name>Invoices</name>
+        <description></description>
+        <dataSourceKey>jdbc/AppianAnywhere</dataSourceKey>
+        <adaptingExplicitSqlNames>false</adaptingExplicitSqlNames>
+        <autoUpdateSchema>true</autoUpdateSchema>
+        <entities>
+            <entity>
+                <uuid>69c9bcea-4766-4f1f-a5ee-1ca7e28c3427</uuid>
+                <name>InvoicePriority</name>
+                <type>{urn:com:appian:types:DF}InvoicePriority</type>
+            </entity>
+            <entity>
+                <uuid>22cefc4f-f487-434c-9a84-9b8efc6b685e</uuid>
+                <name>InvoiceCustomer</name>
+                <type>{urn:com:appian:types:DF}InvoiceCustomer</type>
+            </entity>
+            <entity>
+                <uuid>53d5c193-bb80-4a81-8f9f-0f2220082a0b</uuid>
+                <name>InvoiceChange</name>
+                <type>{urn:com:appian:types:DF}InvoiceChange</type>
+            </entity>
+            <entity>
+                <uuid>89f64a63-2964-4208-b0cb-618d5365f887</uuid>
+                <name>Invoice</name>
+                <type>{urn:com:appian:types:DF}Invoice</type>
+            </entity>
+            <entity>
+                <uuid>f0d5f820-af36-46a0-a8bc-15c8f8d76914</uuid>
+                <name>InvoiceStatus</name>
+                <type>{urn:com:appian:types:DF}InvoiceStatus</type>
+            </entity>
+        </entities>
+    </dataStore>
+    <isPublished>true</isPublished>
+    <roleMap>
+        <role allowForAll="false" inherit="false" name="administrators">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000dcdc-97dd-8000-183e-011e94011e94_54</groupUuid>
+            </groups>
+        </role>
+        <role allowForAll="false" inherit="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="readers">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000dcdc-97dd-8000-183e-011e94011e94_53</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+</dataStoreHaul>

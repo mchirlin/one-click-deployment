@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>DF_OpenTasksGrid</name>
+        <uuid>_a-0000dcdc-981d-8000-183f-01ef9001ef90_5956</uuid>
+        <description>Interface to back the Open Tasks record view.</description>
+        <parentUuid>be39d4bf-319d-49c1-a100-6f40f1c05fb8</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!pagingInfo: #&quot;SYSTEM_SYSRULES_pagingInfo&quot;(startIndex: 1, batchSize: 5),
+  with(
+    /* Retrieve data from the process report to use here */
+    local!report: a!queryProcessAnalytics(
+      report: #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5929&quot;,
+      contextProcessModels: #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5927&quot;,
+      query: #&quot;SYSTEM_SYSRULES_query&quot;(
+        filter: #&quot;SYSTEM_SYSRULES_queryFilter&quot;(
+          field: &quot;c7&quot;,
+          operator: &quot;=&quot;,
+          value: ri!recordId
+        ),
+        pagingInfo: local!pagingInfo
+      )
+    ),
+    {
+      /* If there is no data, display nothing.                                       *
+       * Otherwise, iterate over the column rule to show a grid of task information. */
+      if(
+        local!report.totalCount=0,
+        {},
+        #&quot;SYSTEM_SYSRULES_gridField&quot;(
+          label: local!report.name,
+          instructions: local!report.description,
+          emptyGridMessage: &quot;There are no open tasks for this record&quot;,
+          totalCount: local!report.totalCount,
+          columns: {
+            apply(
+              #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5957&quot;(columnConfig: _, data: local!report.data),
+              local!report.columnConfigs
+            )
+          },
+          value: local!pagingInfo,
+          saveInto: local!pagingInfo
+        )
+      )
+    }
+  )
+)</definition>
+        <namedTypedValue>
+            <name>recordId</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>DF_GridFilters</name>
+        <uuid>_a-0000dcdc-981d-8000-183f-01ef9001ef90_5953</uuid>
+        <description>Returns a rich text field representing the filters applied to a grid, along with a link for clearing them.</description>
+        <parentUuid>1c9d8eb9-f682-4add-a209-b09af0151627</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>#&quot;SYSTEM_SYSRULES_richTextDisplayField&quot;(
+  label: &quot;Filters&quot;,
+  labelPosition: &quot;ADJACENT&quot;,
+  value: {
+    if(isnull(ri!creator),
+      {},
+      {
+        #&quot;SYSTEM_SYSRULES_richTextItem&quot;(text: &quot;Creator: &quot; &amp; #&quot;99c74e51-c509-4f87-8cb8-a17e0d0cad80_FORMATNAME&quot;(ri!creator)),
+        char(10)
+      }
+    ),
+    if(isnull(ri!creationTime),
+      {},
+      {
+        #&quot;SYSTEM_SYSRULES_richTextItem&quot;(text: &quot;Created In: &quot; &amp; #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5940&quot;(eomonth(today(),ri!creationTime))),
+        char(10)
+      }
+    ),
+    if(isnull(ri!status),
+      {},
+      {
+        #&quot;SYSTEM_SYSRULES_richTextItem&quot;(text: &quot;Status: &quot; &amp; ri!status),
+        char(10)
+      }
+    ),
+    if(isnull(ri!priority),
+      {},
+      {
+        #&quot;SYSTEM_SYSRULES_richTextItem&quot;(text: &quot;Priority: &quot; &amp; ri!priority),
+        char(10)
+      }
+    ),
+    if(
+      all(fn!isnull, {ri!creator, ri!creationTime, ri!status, ri!priority, ri!searchTerm}),
+      #&quot;SYSTEM_SYSRULES_richTextItem&quot;(text: &quot;&lt;no filter applied&gt;&quot;, style: &quot;EMPHASIS&quot;),
+      {
+        #&quot;SYSTEM_SYSRULES_richTextItem&quot;(
+          text: &quot;(Clear Filters and Search)&quot;,
+          link: #&quot;SYSTEM_SYSRULES_dynamicLink&quot;(
+            value: null,
+            saveInto: {
+              ri!creator,
+              ri!creationTime,
+              ri!status,
+              ri!priority,
+              ri!searchTerm
+            }
+          )
+        )
+      }
+    )
+  }
+)</definition>
+        <namedTypedValue>
+            <name>creator</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>creationTime</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>status</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>priority</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>searchTerm</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

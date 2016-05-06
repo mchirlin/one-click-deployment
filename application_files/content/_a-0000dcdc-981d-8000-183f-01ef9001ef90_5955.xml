@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>DF_InvoiceDetails</name>
+        <uuid>_a-0000dcdc-981d-8000-183f-01ef9001ef90_5955</uuid>
+        <description>&quot;Base&quot; interface module, with all the basic fields of the record. Used by the record dashboard, create/update, and task forms.</description>
+        <parentUuid>be39d4bf-319d-49c1-a100-6f40f1c05fb8</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  /* The local variables store the options for the Pick Single / Multiple from List fields    *
+   * We only show the active options, plus any inactive options already stored on this record */
+  local!DF_statusOptions: if(ri!record.DF_status.active,#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5942&quot;(#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5974&quot;(), null),#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5942&quot;(#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5974&quot;(), ri!record.DF_status.value)),
+  local!DF_priorityOptions: if(ri!record.DF_priority.active,#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5942&quot;(#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5975&quot;(), null),#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5942&quot;(#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5975&quot;(), ri!record.DF_priority.value)),
+  local!DF_customerOptions: if(ri!record.DF_customer.active,#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5942&quot;(#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5976&quot;(), null),#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5942&quot;(#&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5976&quot;(), ri!record.DF_customer.value)),
+  {
+    #&quot;SYSTEM_SYSRULES_sectionLayout&quot;(
+      label: ri!label,
+      firstColumnContents: {
+        #&quot;SYSTEM_SYSRULES_textField&quot;(
+          label: &quot;Title&quot;,
+          labelPosition: if(ri!readOnly, &quot;ADJACENT&quot;, &quot;ABOVE&quot;),
+          instructions: if(ri!readOnly, &quot;&quot;, &quot;&quot;),
+          helpTooltip: if(ri!readOnly, &quot;&quot;, &quot;&quot;),
+          placeholder: if(ri!readOnly, &quot;&quot;, &quot;&quot;),
+          required: not(ri!readOnly),
+          value: ri!record.title,
+          saveInto: ri!record.title,
+          readOnly: ri!readOnly,
+          validations: if(
+            len(ri!record.title) &lt;= 200,
+            &quot;&quot;,
+            &quot;Value may not be longer than 200 characters. You have entered &quot; &amp; len(ri!record.title) &amp; &quot; characters.&quot;
+          )
+        ),
+        if(
+          ri!readOnly,
+          #&quot;SYSTEM_SYSRULES_textField&quot;(
+            label: &quot;Status&quot;,
+            labelPosition: &quot;ADJACENT&quot;,
+            value: ri!record.DF_status.value,
+            readOnly: true
+          ),
+          #&quot;SYSTEM_SYSRULES_dropdownField&quot;(
+            label: &quot;Status&quot;,
+            labelPosition: &quot;ABOVE&quot;,
+            instructions: &quot;&quot;,
+            helpTooltip: &quot;&quot;,
+            placeholderLabel: &quot;--- Select a Value ---&quot;,
+            choiceLabels: local!DF_statusOptions.value,
+            choiceValues: local!DF_statusOptions,
+            required: not(ri!readOnly),
+            value: ri!record.DF_status,
+            saveInto: ri!record.DF_status
+          )
+        ),
+        if(
+          ri!readOnly,
+          #&quot;SYSTEM_SYSRULES_imageField&quot;(
+            label: &quot;Priority&quot;,
+            labelPosition: &quot;ADJACENT&quot;,
+            images: #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5951&quot;(ri!record.DF_priority.value),
+            size: &quot;ICON&quot;
+          ),
+          #&quot;SYSTEM_SYSRULES_dropdownField&quot;(
+            label: &quot;Priority&quot;,
+            labelPosition: &quot;ABOVE&quot;,
+            instructions: &quot;&quot;,
+            helpTooltip: &quot;&quot;,
+            placeholderLabel: &quot;--- Select a Value ---&quot;,
+            choiceLabels: local!DF_priorityOptions.value,
+            choiceValues: local!DF_priorityOptions,
+            required: not(ri!readOnly),
+            value: ri!record.DF_priority,
+            saveInto: ri!record.DF_priority
+          )
+        ),
+        #&quot;SYSTEM_SYSRULES_textField&quot;(
+          label: &quot;Description&quot;,
+          labelPosition: if(ri!readOnly, &quot;ADJACENT&quot;, &quot;ABOVE&quot;),
+          instructions: if(ri!readOnly, &quot;&quot;, &quot;&quot;),
+          helpTooltip: if(ri!readOnly, &quot;&quot;, &quot;&quot;),
+          placeholder: if(ri!readOnly, &quot;&quot;, &quot;&quot;),
+          required: not(ri!readOnly),
+          value: ri!record.description,
+          saveInto: ri!record.description,
+          readOnly: ri!readOnly,
+          validations: if(
+            len(ri!record.description) &lt;= 200,
+            &quot;&quot;,
+            &quot;Value may not be longer than 200 characters. You have entered &quot; &amp; len(ri!record.description) &amp; &quot; characters.&quot;
+          )
+        ),
+        if(
+          ri!creating,
+          {},
+          {
+            #&quot;SYSTEM_SYSRULES_linkField&quot;(
+              label: &quot;Created By&quot;,
+              labelPosition: if(ri!readOnly, &quot;ADJACENT&quot;, &quot;ABOVE&quot;),
+              links: #&quot;SYSTEM_SYSRULES_userRecordLink&quot;(
+                label: #&quot;99c74e51-c509-4f87-8cb8-a17e0d0cad80_FORMATNAME&quot;(ri!record.createdBy),
+                user: ri!record.createdBy
+              )
+            ),
+            #&quot;SYSTEM_SYSRULES_textField&quot;(
+              label: &quot;Created On&quot;,
+              labelPosition: if(ri!readOnly, &quot;ADJACENT&quot;, &quot;ABOVE&quot;),
+              value: #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5937&quot;(ri!record.createdOn),
+              readOnly: true
+            )
+          }
+        )
+      },
+      secondColumnContents: {
+        if(
+          ri!readOnly,
+          #&quot;SYSTEM_SYSRULES_textField&quot;(
+            label: &quot;Customer&quot;,
+            labelPosition: &quot;ADJACENT&quot;,
+            value: ri!record.DF_customer.value,
+            readOnly: true
+          ),
+          #&quot;SYSTEM_SYSRULES_dropdownField&quot;(
+            label: &quot;Customer&quot;,
+            labelPosition: &quot;ABOVE&quot;,
+            instructions: &quot;&quot;,
+            helpTooltip: &quot;&quot;,
+            placeholderLabel: &quot;--- Select a Value ---&quot;,
+            choiceLabels: local!DF_customerOptions.value,
+            choiceValues: local!DF_customerOptions,
+            required: not(ri!readOnly),
+            value: ri!record.DF_customer,
+            saveInto: ri!record.DF_customer
+          )
+        ),
+        #&quot;SYSTEM_SYSRULES_dateField&quot;(
+          label: &quot;Due Date&quot;,
+          labelPosition: if(ri!readOnly, &quot;ADJACENT&quot;, &quot;ABOVE&quot;),
+          instructions: if(ri!readOnly, &quot;&quot;, &quot;&quot;),
+          helpTooltip: if(ri!readOnly, &quot;&quot;, &quot;&quot;),
+          required: not(ri!readOnly),
+          value: ri!record.dueDate,
+          saveInto: ri!record.dueDate,
+          readOnly: ri!readOnly
+        ),
+        #&quot;SYSTEM_SYSRULES_floatingPointField&quot;(
+          label: &quot;Dollar Amount&quot;,
+          labelPosition: if(ri!readOnly, &quot;ADJACENT&quot;, &quot;ABOVE&quot;),
+          instructions: if(ri!readOnly, &quot;&quot;, &quot;&quot;),
+          helpTooltip: if(ri!readOnly, &quot;&quot;, &quot;&quot;),
+          placeholder: if(ri!readOnly, &quot;&quot;, &quot;&quot;),
+          required: false,
+          value: ri!record.dollarAmount,
+          saveInto: ri!record.dollarAmount,
+          readOnly: ri!readOnly
+        ),
+        if(
+          ri!creating,
+          {},
+          {
+            #&quot;SYSTEM_SYSRULES_linkField&quot;(
+              label: &quot;Updated By&quot;,
+              labelPosition: if(ri!readOnly, &quot;ADJACENT&quot;, &quot;ABOVE&quot;),
+              links: #&quot;SYSTEM_SYSRULES_userRecordLink&quot;(
+                label: #&quot;99c74e51-c509-4f87-8cb8-a17e0d0cad80_FORMATNAME&quot;(ri!record.updatedBy),
+                user: ri!record.updatedBy
+              )
+            ),
+            #&quot;SYSTEM_SYSRULES_textField&quot;(
+              label: &quot;Updated On&quot;,
+              labelPosition: if(ri!readOnly, &quot;ADJACENT&quot;, &quot;ABOVE&quot;),
+              value: #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5937&quot;(ri!record.updatedOn),
+              readOnly: true
+            )
+          }
+        )
+      }
+    ),
+    #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5950&quot;(
+      documents: ri!documents,
+      readOnly: ri!readOnly,
+      target: if(ri!creating,
+        #&quot;_a-0000dcdc-981d-8000-183f-01ef9001ef90_5928&quot;,
+        ri!record.folderId
+      )
+    )
+  }
+)</definition>
+        <namedTypedValue>
+            <name>record</name>
+            <type>
+                <name>Invoice</name>
+                <namespace>urn:com:appian:types:DF</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>creating</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>readOnly</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>documents</name>
+            <type>
+                <name>CollaborationDocument?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>label</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

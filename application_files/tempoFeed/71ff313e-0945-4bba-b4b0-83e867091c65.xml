@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tempoFeedHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <tempoFeed>
+        <uuid>71ff313e-0945-4bba-b4b0-83e867091c65</uuid>
+        <name>Department Finances</name>
+        <description>Feed for updates about Invoices</description>
+        <showInCatalog>true</showInCatalog>
+        <systemFeed>false</systemFeed>
+    </tempoFeed>
+    <roleMap>
+        <role name="administrator">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000dcdc-97dd-8000-183e-011e94011e94_54</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+</tempoFeedHaul>

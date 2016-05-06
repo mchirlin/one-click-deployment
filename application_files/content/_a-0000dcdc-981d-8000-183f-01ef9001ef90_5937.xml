@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>DF_FriendlyFormatDate</name>
+        <uuid>_a-0000dcdc-981d-8000-183f-01ef9001ef90_5937</uuid>
+        <description>Takes a date-time a returns a different format based on how long ago it is. If it's today, only show the time. If it's this year sometime, only show the day and month. If it's longer ago than that, show day, month, and year.</description>
+        <parentUuid>1c9d8eb9-f682-4add-a209-b09af0151627</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>if(
+  isnull(ri!date),
+  &quot;&quot;,
+  ri!date &gt; today(),
+  /* Else if the input is sometime today, just show the time. */
+  text(totime(ri!date), &quot;h:mm:ss a&quot;),
+  ri!date &gt; date(year(now()), 1, 1),
+  /* Else if the input is sometime this year, just show the day and month. */
+  text(todate(ri!date), &quot;MMM d&quot;),
+  /* Else, show day, month, and year*/
+  text(todate(ri!date), &quot;MMM d, yyyy&quot;)
+)</definition>
+        <namedTypedValue>
+            <name>date</name>
+            <type>
+                <name>dateTime</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>
